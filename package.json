@@ -1,0 +1,60 @@
+{
+  "name": "kankan-taskm",
+  "version": "0.0.1",
+  "description": "## Kanban UI",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" ",
+    "lite": "lite-server",
+    "postinstall": "typings install",
+    "tsc": "tsc",
+    "tsc:w": "tsc -w",
+    "typings": "typings",
+    "clear": "find app -iname '*.js' -delete && find odm -iname '*.js' -delete",
+    "browserify": "browserify -s app app/main.js > bundle.js",
+    "minify": "uglifyjs node_modules/jquery/dist/jquery.min.js node_modules/bootstrap/dist/js/bootstrap.min.js node_modules/bootstrap-material-design/dist/js/material.min.js  node_modules/bootstrap-material-design/dist/js/ripples.min.js bundle.js --screw-ie8 --compress --mangle --output bundle.min.js",
+    "release": "npm run build && grunt",
+    "build": "npm run clear && npm run tsc && npm run browserify && npm run minify"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rodrigopmatias/kanban-task.git"
+  },
+  "author": "Rodrigo Pinheiro Matias",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rodrigopmatias/kanban-task/issues"
+  },
+  "homepage": "https://github.com/rodrigopmatias/kanban-task#readme",
+  "dependencies": {
+    "@angular/common": "2.0.0-rc.4",
+    "@angular/compiler": "2.0.0-rc.4",
+    "@angular/core": "2.0.0-rc.4",
+    "@angular/forms": "0.2.0",
+    "@angular/http": "2.0.0-rc.4",
+    "@angular/platform-browser": "2.0.0-rc.4",
+    "@angular/platform-browser-dynamic": "2.0.0-rc.4",
+    "@angular/router": "3.0.0-beta.1",
+    "@angular/router-deprecated": "2.0.0-rc.2",
+    "@angular/upgrade": "2.0.0-rc.4",
+    "angular2-in-memory-web-api": "0.0.14",
+    "bootstrap": "^3.3.7",
+    "bootstrap-material-design": "^0.5.10",
+    "core-js": "^2.4.0",
+    "jquery": "^2.2.4",
+    "material-design-icons": "^2.2.3",
+    "reflect-metadata": "^0.1.3",
+    "rxjs": "5.0.0-beta.6",
+    "systemjs": "0.19.27",
+    "zone.js": "^0.6.12"
+  },
+  "devDependencies": {
+    "browserify": "^13.1.0",
+    "concurrently": "^2.0.0",
+    "grunt": "^1.0.1",
+    "lite-server": "^2.2.2",
+    "typescript": "^1.8.10",
+    "typings": "^1.0.4",
+    "uglifyjs": "^2.4.10"
+  }
+}
