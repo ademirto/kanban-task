@@ -1,4 +1,8 @@
 app:
+    stop_signal: SIGSTOP
     build: images/nodejs
+    ports:
+        - 3000:3000
+        - 3001:3001
     volumes:
         - ../:/app
