@@ -2,12 +2,12 @@ app:
   stop_signal: SIGSTOP
   build: images/nodejs
   ports:
-      - 3000:3000
-      - 3001:3001
+    - 3000:3000
+    - 3001:3001
   links:
     - db
   volumes:
-      - ../:/app
+    - ../:/app
 db:
   image: mongo
   volumes:
