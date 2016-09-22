@@ -5,13 +5,9 @@ app:
     - 3000:3000
     - 3001:3001
   links:
-    - db
+    - cache
   volumes:
     - ../:/app
-db:
-  image: mongo
-  volumes:
-    - ./store/db:/data/db
-  ports:
-    - 27017:27017
-    - 28017:28017
+cache:
+  image: memcached:1.4
+  command: memcached -m 8
