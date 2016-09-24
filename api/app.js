@@ -7,6 +7,7 @@ var express = require('express') ,
     cookieParse = require('cookie-parser'),
     MemoryCache = require('connect-memcached')(session),
     bodyParse = require('body-parser'),
+    mongoose = require('mongoose'),
     defaultSettings = require('./settings').defaultSettings;
 
 module.exports = {
@@ -20,8 +21,20 @@ module.exports = {
       settings[attr] = (settings[attr] || defaultSettings[attr]);
   },
 
+  settings: {},
+
+  db: function() {
+    if(!this._db) {
+      mongoose.Promise = global.Promise;
+      this._db = mongoose.connect('mongodb://db/base1');
+    }
+
+    return this._db;
+  },
+
   boot: function(settings) {
     this.prepareSettings(settings);
+    this.settings = settings;
 
     app.use(bodyParse.json());
     app.use(bodyParse.urlencoded({extended: true}));
@@ -39,6 +52,8 @@ module.exports = {
         secret: settings.secret
       })
     }));
+
+    require('./user');
 
     app.use('/', express.static(settings.htdocs));
     app.listen(settings.httpPort, () => {

@@ -6,8 +6,13 @@ app:
     - 3001:3001
   links:
     - cache
+    - db
   volumes:
     - ../:/app
 cache:
   image: memcached:1.4
   command: memcached -m 8
+db:
+  image: mongo
+  volumes:
+    - ./store/db:/data/db
