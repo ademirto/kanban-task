@@ -76,7 +76,8 @@ UserSchema.methods = {
 var User = db.model('User', UserSchema);
 
 module.exports = {
-  User: User
+  User: User,
+  userSchema: UserSchema
 };
 
 var rest = new Restful(User);

@@ -10,7 +10,8 @@ api.boot({
   installed: [
     './user',
     './project',
-    './stage'
+    './stage',
+    './task'
   ]
 });
 

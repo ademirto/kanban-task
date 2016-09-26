@@ -26,3 +26,4 @@ var Project = db.model('Project', projectSchema);
 RestfulController.factory('/api/projects', app, Project);
 
 module.exports.Project = Project;
+module.exports.projectSchema = projectSchema;
