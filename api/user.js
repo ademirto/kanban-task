@@ -2,6 +2,8 @@
  *
  **/
 var api = require('./app'),
+    Restful = require('./rest').Restful,
+    RestfulController = require('./rest').RestfulController,
     db = api.db(),
     app = api.app,
     settings = api.settings,
@@ -77,6 +79,10 @@ module.exports = {
   User: User
 };
 
+var rest = new Restful(User);
+
+RestfulController.factory('/api/users', app, User);
+
 app.post('/api/users/register', (req, res) => {
   var rst = {
     success: false,
@@ -121,130 +127,137 @@ app.post('/api/users/register', (req, res) => {
   }
 });
 
-app.get('/api/users/activate', (req, res) => {
-});
+app.get('/api/users/activate', (req, res) => {});
 
 app.get('/api/users', (req, res) => {
-  User.find().exec((err, collection) => {
-    res.json({
-      success: (!err),
-      count: collection.length,
-      collection: collection.map(d => d.serialize())
-    });
-  });
+  rest.all().then(
+    (collection) => {
+      res.json({
+        success: true,
+        message: 'itens recuperados com sucesso.',
+        count: collection.length,
+        collection: collection.map(d => d.serialize())
+      });
+    },
+    (err) => {
+      res.json({
+        success: false,
+        message: err,
+        count: 0,
+        collection: []
+      });
+    }
+  );
+});
+
+app.get('/api/users/:id', (req, res) => {
+  rest.get(req.params.id).then(
+    (instance) => {
+      res.json({
+        success: true,
+        message: 'item recuperado com sucesso.',
+        instance: instance.serialize()
+      });
+    },
+    (err) => {
+      res.json({
+        success: false,
+        message: err,
+        instance: null
+      });
+    }
+  );
 });
 
 app.post('/api/users', (req, res) => {
-  var rst = {
-    success: false,
-    message: 'empty fn'
-  };
-
-  console.log(req.body);
-
-  var user = new User({
-    _id: null,
-    username: req.body.username,
-    name: req.body.name,
-    active: req.body.active
-  });
-
-  user.save().then(
-    () => {
-      rst.success = true;
-      rst.message = 'dado persistido com sucesso.';
-      rst.instance = user.serialize();
-
-      res.json(rst);
+  rest.create(req.body).then(
+    (instance) => {
+      res.json({
+        success: true,
+        message: 'dados persistidos com sucesso!',
+        instance: instance
+      });
     },
     (err) => {
-      rst.message = err;
-      res.json(rst);
+      res.json({
+        success: false,
+        instance: null,
+        message: err
+      });
     }
   );
 });
 
 app.put('/api/users', (req, res) => {
-  var rst = {
-    success: false,
-    message: 'nada foi feito ainda'
-  };
+  rest.update(req.body.filters, req.body.data).then(
+    (result) => {
+      console.log(result);
 
-  rst.filters = req.body.filters;
-  User.update(req.body.filters, req.body.update, {multi: true}).then(
-    () => {
-      rst.success = true;
-      rst.message = 'itens atualizados com sucesso';
-      res.json(rst);
+      res.json({
+        success: true,
+        count: result.n,
+        message: 'itens atualizados com sucesso!'
+      });
     },
     (err) => {
-      rst.message = err;
-      res.json(rst);
+      res.json({
+        success: false,
+        message: err
+      });
     }
   );
 });
 
 app.put('/api/users/:id', (req, res) => {
-  var rst = {
-    success: false,
-    message: 'nada foi feito ainda'
-  };
+  rest.update(req.params.id, req.body.data).then(
+    (result) => {
+      console.log(result);
 
-  User.findByIdAndUpdate().then(
-    () => {
-      rst.success = true;
-      rst.message = 'item atualizado com sucesso.';
-      res.json(rst);
+      res.json({
+        success: true,
+        count: result.n,
+        message: 'itens atualizados com sucesso!'
+      });
     },
     (err) => {
-      rst.message = err;
-      res.json(rst);
+      res.json({
+        success: false,
+        message: err
+      });
     }
   );
 });
 
 app.delete('/api/users', (req, res) => {
-  var rst = {
-    success: false,
-    message: 'nada foi feito ainda'
-  };
-
-  User.remove(req.body.filters).then(
-    (collection) => {
-      rst.success = true;
-      rst.collection = collection;
-      rst.query = req.body.filters;
-
-      res.json(rst);
+  rest.remove(req.body.filters).then(
+    (result) => {
+      res.json({
+        success: true,
+        message: 'itens removidos com sucesso!'
+      });
     },
     (err) => {
-      res.json(rst);
+      res.json({
+        success: false,
+        message: err
+      });
     }
   );
-
 });
 
 app.delete('/api/users/:id', (req, res) => {
-  var rst = {
-    success: false,
-    message: 'nada foi feito ainda!'
-  };
-
-  console.log('remove user with id %s', req.params.id);
-  User.remove({_id: req.params.id}).then(
-    () => {
-      console.log('done');
-
-      rst.success = true;
-      rst.message = 'removido com sucesso.';
-      res.json(rst);
+  rest.remove(req.params.id).then(
+    (result) => {
+      res.json({
+        success: true,
+        message: 'item removido com sucesso!'
+      });
     },
     (err) => {
-      console.log('err');
-      console.log(err);
-
-      rst.message = err;
-      res.json(rst);
+      res.json({
+        success: false,
+        message: err
+      });
     }
   );
 });
