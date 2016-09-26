@@ -53,7 +53,7 @@ module.exports = {
       })
     }));
 
-    require('./user');
+    this.settings.installed.forEach(app => require(app));
 
     app.use('/', express.static(settings.htdocs));
     app.listen(settings.httpPort, () => {

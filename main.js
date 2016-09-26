@@ -6,7 +6,12 @@ var app = api.app;
 
 api.boot({
   htdocs: __dirname,
-  secret: '@@$%asda1sd9a1s981erfvd81%&&'
+  secret: '@@$%asda1sd9a1s981erfvd81%&&',
+  installed: [
+    './user',
+    './project',
+    './stage'
+  ]
 });
 
 app.get('/count', (req, res) => {
