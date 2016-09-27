@@ -82,8 +82,6 @@ module.exports = {
 
 var rest = new Restful(User);
 
-RestfulController.factory('/api/users', app, User);
-
 app.post('/api/users/register', (req, res) => {
   var rst = {
     success: false,
@@ -140,3 +138,5 @@ app.get('/api/users/session', (req, res) => {
 
   res.json(rst);
 });
+
+RestfulController.factory('/api/users', app, User);

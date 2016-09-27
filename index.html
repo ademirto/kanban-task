@@ -12,101 +12,20 @@
     <link rel="stylesheet" href="node_modules/material-design-icons/iconfont/material-icons.css">
 
     <link rel="stylesheet" href="styles.css">
+
+    <script src="node_modules/core-js/client/shim.min.js"></script>
+    <script src="node_modules/zone.js/dist/zone.js"></script>
+    <script src="node_modules/reflect-metadata/Reflect.js"></script>
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <!-- 2. Configure SystemJS -->
+    <script src="systemjs.config.js"></script>
+    <script>
+      System.import('ui').catch(function(err){ console.error(err); });
+    </script>
   </head>
   <body>
 
-    <nav class="navbar navbar-danger navbar-fixed-top">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <a class="navbar-brand" href="#">
-            <i class="material-icons">dns</i>
-            <span>The Kanban Task Manager</span>
-          </a>
-        </div>
-
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">Link</a></li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="#">Separated link</a></li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-
-    <div class="container-fluid container-main">
-      <div class="row-fluid">
-        <div class="col-md-12">
-          <p>The Project Name - Project stage or Sprint</p>
-        </div>
-      </div>
-      <div class="row-fluid">
-        <div class="col-md-3 col-sm-4">
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              task 1
-            </div>
-            <div class="panel-body">
-              waiting
-            </div>
-          </div>
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              task 1
-            </div>
-            <div class="panel-body">
-              waiting
-            </div>
-          </div>
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              task 1
-            </div>
-            <div class="panel-body">
-              waiting
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3 col-sm-4">
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              task 1
-            </div>
-            <div class="panel-body">
-              working
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3 col-sm-4">
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              task 1
-            </div>
-            <div class="panel-body">
-              for test
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3 col-sm-12">
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              task 1
-            </div>
-            <div class="panel-body">
-              finished
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <my-app></my-app>
 
     <script src="node_modules/jquery/dist/jquery.min.js" charset="utf-8"></script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js" charset="utf-8"></script>

@@ -39,3 +39,6 @@ jspm_packages
 typings/*
 google-*.json
 service/store/db/*
+
+ui/*.js
+ui/*.js.map
