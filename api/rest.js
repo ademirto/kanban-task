@@ -59,34 +59,25 @@ RestfulController.prototype = {
 
   defaultRouters: {
     get: {
-      method: 'GET',
-      path: null,
-      fn: null
+      method: 'GET'
     },
     all: {
       method: 'GET',
-      path: ':id',
-      fn: null
+      path: ':id'
     },
     update: {
-      method: 'PUT',
-      path: null,
-      fn: null
+      method: 'PUT'
     },
     updateAll: {
       method: 'PUT',
-      path: ':id',
-      fn: null
+      path: ':id'
     },
     remove: {
-      method: 'DELETE',
-      path: null,
-      fn: null
+      method: 'DELETE'
     },
     removeAll: {
       method: 'DELETE',
-      path: ':id',
-      fn: null
+      path: ':id'
     }
   },
 
@@ -110,8 +101,18 @@ RestfulController.prototype = {
       });
     }
 
+    function authRequired(req, res, next) {
+      console.log('check authentication');
+      console.log('free authentication: ', conf.freeAccess || false);
+      next();
+    }
+
     console.log('register method %s for path for %s', conf.method, path);
-    method.call(this._app, path, (conf.fn || notFound));
+    method.call(
+        this._app,
+        path,
+        [authRequired, (conf.fn || notFound)]
+      );
   },
 
   prepare: function() {

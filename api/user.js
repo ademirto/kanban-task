@@ -60,8 +60,6 @@ UserSchema.methods = {
     ].join('-');
   },
   serialize: function() {
-    console.log(this);
-
     return {
       id: this.id,
       username: this.username,

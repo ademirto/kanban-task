@@ -1,6 +1,6 @@
 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
   <ul *ngIf="session && !session.isAuthenticated" class="nav navbar-nav navbar-right">
-    <li><a href="#">Registrar</a></li>
+    <li routerLinkActive="active"><a routerLink="/user/register">Registrar</a></li>
     <li><a href="#">Fazer Login</a></li>
   </ul>
 

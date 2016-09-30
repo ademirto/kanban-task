@@ -1,22 +1,33 @@
 import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
+import {LocationStrategy, HashLocationStrategy} from '@angular/common';
 import {ProfileComponent} from './profile.component';
 import {ProfileService} from './profile.service';
+import {UserRegisterComponent} from './user-register.component';
+import {HomeComponent} from './home.component';
+import {routing, appRouterProviders} from './app.routes';
 
 import {BrowserModule} from '@angular/platform-browser';
+import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 
 @NgModule({
   imports: [
     BrowserModule,
-    HttpModule
+    HttpModule,
+    FormsModule,
+    routing
   ],
   providers: [
+    {provide: LocationStrategy, useClass: HashLocationStrategy},
+    appRouterProviders,
     ProfileService
   ],
   declarations: [
     AppComponent,
-    ProfileComponent
+    HomeComponent,
+    ProfileComponent,
+    UserRegisterComponent
   ],
   bootstrap: [AppComponent]
 })
