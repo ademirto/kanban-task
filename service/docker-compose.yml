@@ -1,12 +1,19 @@
 app:
   stop_signal: SIGSTOP
-  build: images/nodejs
+  image: matias/nodejs
+  command: run start
   ports:
     - 3000:3000
-    - 3001:3001
   links:
+    - transpiler
     - cache
     - db
+  volumes:
+    - ../:/app
+transpiler:
+  stop_signal: SIGSTOP
+  image: matias/nodejs
+  command: run tsc:w
   volumes:
     - ../:/app
 cache:

@@ -98,8 +98,8 @@ app.post('/api/users/register', (req, res) => {
     var user = new User({
       username: req.body.username,
       name: {
-        firstName: req.body.firstName,
-        lastName: req.body.lastName
+        firstName: (req.body.firstName || req.body.firstname),
+        lastName: (req.body.lastName || req.body.lastname)
       },
       active: false,
       email: req.body.email
@@ -124,7 +124,25 @@ app.post('/api/users/register', (req, res) => {
   }
 });
 
-app.get('/api/users/activate', (req, res) => {});
+app.get('/api/users/activate/:token', (req, res) => {
+  var rst = {
+    success: false,
+    message: 'nada foi feito ainda'
+  };
+
+  User.update({active: false, activateToken: req.params.token}, {active: true, activateToken: null}, {multi: false}).then(
+    (result) => {
+      rst.success = (result.n > 0);
+      rst.message = (rst.success ? 'Usuário ativado com sucesso.' : 'Código de ativação não existe!');
+      res.json(rst);
+    },
+    (err) => {
+      rst.message = err;
+      res.json(rst);
+    }
+  );
+
+});
 
 app.get('/api/users/session', (req, res) => {
   var rst = {

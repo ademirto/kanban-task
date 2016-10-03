@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {Http, Response} from '@angular/http';
-import {Observable} from 'rxjs/Observable';
 import {User} from './user.component';
 import {Observable} from 'rxjs';
 
@@ -25,5 +24,12 @@ export class ProfileService {
       user.username = user.usernameFromEmail();
 
     return this.http.post('/api/users/register', user);
+  }
+
+  signIn(email: string, password: string): Observable<Response> {
+    return this.http.post('/api/user/signIn', {
+      email: email,
+      password: password
+    });
   }
 }

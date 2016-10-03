@@ -4,6 +4,7 @@ import {LocationStrategy, HashLocationStrategy} from '@angular/common';
 import {ProfileComponent} from './profile.component';
 import {ProfileService} from './profile.service';
 import {UserRegisterComponent} from './user-register.component';
+import {UserLoginFormComponent} from './user.component';
 import {HomeComponent} from './home.component';
 import {routing, appRouterProviders} from './app.routes';
 
@@ -27,7 +28,8 @@ import {HttpModule} from '@angular/http';
     AppComponent,
     HomeComponent,
     ProfileComponent,
-    UserRegisterComponent
+    UserRegisterComponent,
+    UserLoginFormComponent
   ],
   bootstrap: [AppComponent]
 })
