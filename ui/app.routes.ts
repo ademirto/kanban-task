@@ -1,8 +1,7 @@
 import {ModuleWithProviders} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {HomeComponent} from './home.component';
-import {UserRegisterComponent} from './user-register.component';
-import {UserLoginFormComponent} from './user.component';
+import {UserRegisterComponent, UserLoginFormComponent} from './user.component';
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', redirectTo: 'home'},

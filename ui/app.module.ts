@@ -1,10 +1,10 @@
 import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {LocationStrategy, HashLocationStrategy} from '@angular/common';
-import {ProfileComponent} from './profile.component';
 import {ProfileService} from './profile.service';
-import {UserRegisterComponent} from './user-register.component';
-import {UserLoginFormComponent} from './user.component';
+import {ProfileComponent,
+        UserRegisterComponent,
+        UserLoginFormComponent} from './user.component';
 import {HomeComponent} from './home.component';
 import {routing, appRouterProviders} from './app.routes';
 
