@@ -13,10 +13,30 @@ export class SessionInformation {
 
 @Injectable()
 export class ProfileService {
-  constructor(private http: Http) {}
+  private mySession: SessionInformation
 
-  session(): Observable<Response> {
-    return this.http.get('/api/users/session');
+  constructor(private http: Http) {
+    this.mySession = null;
+  }
+
+  initSession() {
+    this.http.get('/api/users/session').subscribe(
+      (res) => {
+        let rst = res.json();
+        this.mySession = new SessionInformation(
+          rst.fullName,
+          rst.username,
+          rst.isAuthenticated
+        );
+      },
+      () => {
+        this.mySession = null;
+      }
+    );
+  }
+
+  get session() {
+    return this.mySession;
   }
 
   register(user: User): Observable<Response> {
@@ -26,8 +46,12 @@ export class ProfileService {
     return this.http.post('/api/users/register', user);
   }
 
+  signOut(): Observable<Response> {
+    return this.http.post('/api/users/signOut');
+  }
+
   signIn(email: string, password: string): Observable<Response> {
-    return this.http.post('/api/user/signIn', {
+    return this.http.post('/api/users/signIn', {
       email: email,
       password: password
     });

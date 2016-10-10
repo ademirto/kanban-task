@@ -31,26 +31,35 @@ export class ProfileComponent implements OnInit, OnDestroy {
   sub: any;
   session: SessionInformation;
 
-  constructor(private profile: ProfileService) {}
+  constructor(private profile: ProfileService,
+              private router: Router) {}
 
   ngOnInit() {
-    this.sub = this.profile.session().subscribe(
+    this.profile.initSession();
+  }
+
+  signOut() {
+    this.profile.signOut().subscribe(
       (res) => {
-        let rst = res.json();
-        this.session = new SessionInformation(
-          rst.fullName,
-          rst.username,
-          rst.isAuthenticated
-        );
+        var data = res.json();
+
+        if(data.success) {
+          this.router.navigate(['/home']);
+          this.profile.initSession();
+        }
+        else
+          new Android_Toast({content: data.message});
       },
-      () => {
-        this.session = new SessionInformation('', '', false);
+      (err) => {
+        new Android_Toast({
+          content: 'recurso indisponivel no momento.'
+        });
       }
-    )
+    );
   }
 
   ngOnDestroy() {
-    this.sub.unsubscribe();
+    // this.sub.unsubscribe();
   }
 }
 
@@ -101,7 +110,8 @@ export class UserRegisterComponent implements OnInit {
 export class UserLoginFormComponent implements OnInit {
   login: Login
 
-  constructor(private profile: ProfileService) {}
+  constructor(private profile: ProfileService,
+              private router: Router) {}
 
   ngOnInit() {
     this.login = new Login();
@@ -110,7 +120,16 @@ export class UserLoginFormComponent implements OnInit {
   save() {
     this.profile.signIn(this.login.email, this.login.password).subscribe(
       (res) => {
-        console.log('ok');
+        var rst = res.json();
+
+        if(!rst.success)
+          new Android_Toast({
+            content: rst.message
+          });
+        else {
+          this.profile.initSession();
+          this.router.navigate(['/home']);
+        }
       },
       (err) => {
         console.log('err');

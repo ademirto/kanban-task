@@ -33,7 +33,28 @@ function uuidPart(size) {
     return part.join('');
 }
 
+UserSchema.statics = {
+  checkPassword: function(user, password) {
+    var eng = crypto.createHash(settings.defaultHash);
+    eng.update([
+      settings.secret,
+      password
+    ].join("$"));
+
+    var tpass = eng.digest('hex');
+    return User.findOne({email: user, password: tpass});
+  }
+};
+
 UserSchema.methods = {
+
+  fullName() {
+    return [
+      this.name.firstName,
+      this.name.lastName
+    ].join(' ');
+  },
+
   setPassword: function(password, save) {
     save = (save || false);
 
@@ -144,13 +165,76 @@ app.get('/api/users/activate/:token', (req, res) => {
 
 });
 
+var userSession = function(options) {
+  return function(req, res, next) {
+    User.findOne({_id: req.session.userId}).then(
+      (user) => {
+        req.user = user;
+        next();
+      },
+      (err) => {
+        req.user = undefined;
+        next();
+      }
+    );
+  };
+};
+
+app.use(userSession());
+
 app.get('/api/users/session', (req, res) => {
   var rst = {
     success: false,
-    isAuthenticated: false,
-    username: null,
-    fullName: null
+    isAuthenticated: (req.user ? true : false)
   };
+
+  if(rst.isAuthenticated) {
+    rst.username = req.user.username;
+    rst.fullName = req.user.fullName();
+  }
+
+  res.json(rst);
+});
+
+app.post('/api/users/signIn', (req, res) => {
+  var rst = {
+    success: false,
+    message: 'usuário não identificado.'
+  };
+
+  User.checkPassword(req.body.email, req.body.password).then(
+    (user) => {
+      if(user) {
+        req.session.userId = user._id;
+        rst.success = true;
+        rst.message = 'usuário autenticado com sucesso.';
+      }
+      else
+        rst.message = 'usuário ou senha inválidos.';
+
+        res.json(rst);
+    },
+    (err) => {
+      req.session.userId = false;
+      rst.message = err;
+      res.json(rst);
+    }
+  );
+
+});
+
+app.post('/api/users/signOut', (req, res) => {
+  var rst = {
+    success: false,
+    message: 'usuário não estava logado.'
+  };
+
+  if(req.user && req.session.userId) {
+    rst.success = true;
+    rst.message = `O usuário ${req.user.fullName()} efetuou a saída com sucesso.`;
+
+    req.user = req.session.userId = undefined;
+  }
 
   res.json(rst);
 });
