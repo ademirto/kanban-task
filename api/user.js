@@ -167,17 +167,20 @@ app.get('/api/users/activate/:token', (req, res) => {
 
 var userSession = function(options) {
   return function(req, res, next) {
-    User.findOne({_id: req.session.userId}).then(
-      (user) => {
-        req.user = user;
+    if(!req.user && req.session.userId)
+      User.findOne({_id: req.session.userId}).then(
+        (user) => {
+          req.user = user;
+          next();
+        },
+        (err) => {
+          req.user = undefined;
+          next();
+        }
+      );
+      else
         next();
-      },
-      (err) => {
-        req.user = undefined;
-        next();
-      }
-    );
-  };
+    };
 };
 
 app.use(userSession());
