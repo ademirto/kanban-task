@@ -104,7 +104,14 @@ RestfulController.prototype = {
     function authRequired(req, res, next) {
       console.log('check authentication');
       console.log('free authentication: ', conf.freeAccess || false);
-      next();
+      
+      if(!req.user && !(conf.freeAccess || false))
+        res.json({
+          success: false,
+          message: 'acesso negado!'
+        });
+      else
+        next();
     }
 
     console.log('register method %s for path for %s', conf.method, path);
@@ -234,8 +241,12 @@ RestfulController.factory = function(path, app, model, customRoutes) {
       method: 'PUT',
       path: ':id',
       fn: (req, res) => {
-        rest.update(req.params.id, req.body.data).then(
+        rest.update(req.params.id, req.body).then(
           (result) => {
+            console.log(result);
+            console.log(req.params);
+            console.log(req.body);
+
             res.json({
               success: (result.n > 0),
               count: result.n,

@@ -13,11 +13,13 @@
       </thead>
       <tbody>
         <tr *ngFor="let user of users.collection">
-          <td>{{ fullname(user.name) }}</td>
+          <td>{{ user.fullname }}</td>
           <td>{{ user.username }}</td>
           <td>{{ user.email }}</td>
           <td>
-            <a href="#"><i class="material-icons">edit</i></a>
+            <a href="#" (click)="edit(user.id)">
+              <i class="material-icons">edit</i>
+            </a>
             <a href="#"><i class="material-icons">delete</i></a>
           </td>
         </tr>
@@ -31,6 +33,8 @@
   </div>
 </div>
 
-<div style="position: absolute; bottom: 45px; right: 45px">
-  <a href="#" class="btn btn-fab"><i class="material-icons">add</i></a>
+<div class="float-fab-btn-container">
+  <button href="#" class="btn btn-fab btn-primary" (click)="create()">
+    <i class="material-icons">add</i>
+  </button>
 </div>

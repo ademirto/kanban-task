@@ -1,8 +1,8 @@
 import {Component, Input, OnInit, OnDestroy} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {ProfileService, SessionInformation} from './profile.service';
-import {UserService, User} from './user.service';
-import {Router} from '@angular/router';
+import {UserService, RegisterModel, User} from './user.service';
+import {Router, ActivatedRoute} from '@angular/router';
 
 class Login {
   email: string
@@ -54,12 +54,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
   templateUrl: 'ui/user.component/register-form.html'
 })
 export class UserRegisterComponent implements OnInit {
-  @Input() user: User
+  @Input() user: RegisterModel
 
   constructor(private router: Router, private profile: ProfileService) {}
 
   ngOnInit() {
-    this.user = new User();
+    this.user = new RegisterModel();
   }
 
   goBack() {
@@ -129,7 +129,8 @@ export class UserLoginFormComponent implements OnInit {
   templateUrl: 'ui/user.component/list.html'
 })
 export class UserListComponent implements OnInit {
-  constructor(private users: UserService) {}
+  constructor(private users: UserService,
+              private router: Router) {}
 
   fullname(name: any) {
     return [
@@ -138,7 +139,70 @@ export class UserListComponent implements OnInit {
     ].join(' ');
   }
 
+  edit(id: string) {
+    this.router.navigate(['/user', 'form', id]);
+    return false;
+  }
+
+  create() {
+    this.users.selected = new User();
+    this.router.navigate(['/user/form']);
+  }
+
   ngOnInit() {
     this.users.read();
+  }
+}
+
+@Component({
+  selector: 'user-form',
+  templateUrl: 'ui/user.component/form.html'
+})
+export class UserFormComponent implements OnInit, OnDestroy {
+  sub: any;
+
+  constructor(private users: UserService,
+              private router: Router,
+              private activateRoute: ActivatedRoute) {}
+
+  save() {
+    this.users.save().subscribe(
+      (res) => {
+        let rst = res.json();
+
+        if(rst.success) {
+          this.users.read().subscribe(
+            (res) => {
+              console.log('reloaded');
+            }
+          )
+        }
+
+        console.log(res);
+      },
+      (err) => {
+        console.log(err);
+      }
+    )
+  }
+
+  goBack() {
+    this.router.navigate(['/user']);
+  }
+
+  ngOnInit() {
+    this.sub = this.activateRoute.params.subscribe(
+      (param: any) => {
+        if(param.id) {
+          this.users.select(param.id);
+        }
+        else
+          this.users.selected = new User();
+      }
+    );
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 }

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Http, Response} from '@angular/http';
-import {User} from './user.service';
+import {RegisterModel} from './user.service';
 import {Observable} from 'rxjs';
 
 export class SessionInformation {
@@ -39,7 +39,7 @@ export class ProfileService {
     return this.mySession;
   }
 
-  register(user: User): Observable<Response> {
+  register(user: RegisterModel): Observable<Response> {
     if(!user.username)
       user.username = user.usernameFromEmail();
 

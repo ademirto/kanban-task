@@ -6,7 +6,8 @@ import {UserService} from './user.service';
 import {ProfileComponent,
         UserRegisterComponent,
         UserLoginFormComponent,
-        UserListComponent} from './user.component';
+        UserListComponent,
+        UserFormComponent} from './user.component';
 import {HomeComponent} from './home.component';
 import {routing, appRouterProviders} from './app.routes';
 
@@ -33,7 +34,8 @@ import {HttpModule} from '@angular/http';
     ProfileComponent,
     UserRegisterComponent,
     UserLoginFormComponent,
-    UserListComponent
+    UserListComponent,
+    UserFormComponent
   ],
   bootstrap: [AppComponent]
 })
