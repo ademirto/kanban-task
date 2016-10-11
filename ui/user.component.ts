@@ -1,22 +1,8 @@
 import {Component, Input, OnInit, OnDestroy} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {ProfileService, SessionInformation} from './profile.service';
+import {UserService, User} from './user.service';
 import {Router} from '@angular/router';
-
-export class User {
-  constructor(
-    public username?: string,
-    public firstname?: string,
-    public lastname?: string,
-    public email?: string,
-    public password?: string,
-    public confirmPassword?: string
-  ) {}
-
-  usernameFromEmail() {
-    return this.email.split('@')[0];
-  }
-}
 
 class Login {
   email: string
@@ -135,5 +121,24 @@ export class UserLoginFormComponent implements OnInit {
         console.log('err');
       }
     )
+  }
+}
+
+@Component({
+  selector: 'user-list',
+  templateUrl: 'ui/user.component/list.html'
+})
+export class UserListComponent implements OnInit {
+  constructor(private users: UserService) {}
+
+  fullname(name: any) {
+    return [
+      name.firstName,
+      name.lastName
+    ].join(' ');
+  }
+
+  ngOnInit() {
+    this.users.read();
   }
 }

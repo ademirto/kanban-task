@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Http, Response} from '@angular/http';
-import {User} from './user.component';
+import {User} from './user.service';
 import {Observable} from 'rxjs';
 
 export class SessionInformation {
@@ -47,7 +47,7 @@ export class ProfileService {
   }
 
   signOut(): Observable<Response> {
-    return this.http.post('/api/users/signOut');
+    return this.http.post('/api/users/signOut', {});
   }
 
   signIn(email: string, password: string): Observable<Response> {

@@ -2,9 +2,11 @@ import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {LocationStrategy, HashLocationStrategy} from '@angular/common';
 import {ProfileService} from './profile.service';
+import {UserService} from './user.service';
 import {ProfileComponent,
         UserRegisterComponent,
-        UserLoginFormComponent} from './user.component';
+        UserLoginFormComponent,
+        UserListComponent} from './user.component';
 import {HomeComponent} from './home.component';
 import {routing, appRouterProviders} from './app.routes';
 
@@ -22,14 +24,16 @@ import {HttpModule} from '@angular/http';
   providers: [
     {provide: LocationStrategy, useClass: HashLocationStrategy},
     appRouterProviders,
-    ProfileService
+    ProfileService,
+    UserService
   ],
   declarations: [
     AppComponent,
     HomeComponent,
     ProfileComponent,
     UserRegisterComponent,
-    UserLoginFormComponent
+    UserLoginFormComponent,
+    UserListComponent
   ],
   bootstrap: [AppComponent]
 })
